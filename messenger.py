@@ -5,27 +5,12 @@ Created on Tue Nov  5 15:19:31 2024
 
 @author: ngs
 """
-
+import json
 from datetime import datetime
 
-server = {
-    'users': [
-        {'id': 1, 'name': 'Alice'},
-        {'id': 2, 'name': 'Bob'}
-    ],
-    'channels': [
-        {'id': 1, 'name': 'Town square', 'member_ids': [1, 2]}
-    ],
-    'messages': [
-        {
-            'id': 1,
-            'reception_date': datetime.now(),
-            'sender_id': 1,
-            'channel': 1,
-            'content': 'Hi 👋'
-        }
-    ]
-}
+with open('server_json.json') as file:
+  server = json.load(file)
+
 def accueil() :
     print('=== Messenger ===')
     print('x. Leave')
@@ -34,7 +19,7 @@ def accueil() :
     print('3.See messages')
     choice = input('Select an option: ')
     if choice == 'x':
-    print('Bye!')
+        print('Bye!')
     elif choice == '1':
         for elem in server['users'] :
             print(elem['id'],",",elem['name'])
@@ -76,6 +61,12 @@ def new_user(prénom):
     nom = input
     n_id = max(dico['id'] for dico in server['users'])+1
     server['users'].append({'id': n_id,'name':nom})
+
+def sauvegarde_fichier():
+    with open('server_json.json', 'w') as file :
+         json.dump()
+
+    
 
 
 
