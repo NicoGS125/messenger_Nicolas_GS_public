@@ -57,10 +57,18 @@ def id_to_name2(id):
 
 print(id_to_name(1))
 
+def nv_groupe(name, member_ids):
+    new_channel_id = len(server['channels']) + 1
+    new_channel = {"id": new_channel_id, "name": name, "member_id": member_ids}
+    server['channels'].append(new_channel)
+    print(f"\nNouveau canal ajouté : {new_channel}")
+    return new_channel
+
 def new_user(prénom):
     nom = input
     n_id = max(dico['id'] for dico in server['users'])+1
     server['users'].append({'id': n_id,'name':nom})
+
 
 def sauvegarde_fichier():
     with open('server_json.json', 'w') as file :
