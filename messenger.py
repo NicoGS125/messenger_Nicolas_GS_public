@@ -43,7 +43,7 @@ def accueil() :
 def id_to_name(id):
     liste = []
     for dico in server['users']:
-        l = [c for c in dico.keys()]
+        l = [key for key in dico.keys()]
         if dico[l[0]]==id:
             liste.append(dico[l[1]])
     return liste[0]
@@ -66,13 +66,16 @@ def nv_groupe(name, member_ids):
 
 def new_user(prénom):
     nom = input
-    n_id = max(dico['id'] for dico in server['users'])+1
+    n_id = max(user['id'] for user in server['users'])+1
     server['users'].append({'id': n_id,'name':nom})
-
 
 def sauvegarde_fichier():
     with open('server_json.json', 'w') as file :
          json.dump()
+
+
+
+
 
     
 
