@@ -8,8 +8,12 @@ Created on Tue Nov  5 15:19:31 2024
 import json
 from datetime import datetime
 
-with open('server_json.json') as file:
-  server = json.load(file)
+def load_server() :
+    with open('server_json.json') as json_file:
+        server = json.load(json_file)
+    return server
+
+server = load_server()
 
 def accueil() :
     print('=== Messenger ===')
@@ -72,6 +76,41 @@ def new_user(prénom):
 def sauvegarde_fichier():
     with open('server_json.json', 'w') as file :
          json.dump()
+
+class User:
+    def __init__(self, id: int, name : str):
+        self.id = id
+        self.name = name
+
+class Channels :
+    def __init__(self, id: int, name: str, member_id : list)
+        self.id = id
+        self.name = name
+        self.member_id = member_id
+
+class message :
+    def __init__(self, id : int, reception_date = str, sender_id = int, channel = int, content =str)
+        self.id = id
+        self.reception_date = reception_date
+        self.sender_id = sender_id
+        self.channel = channel
+        self.content = content
+
+def conversion_dico_User(dico) :
+    return User(dico['id'],dico['Name'])
+
+def conversion_dico_Channels(dico):
+    return Channels(dico['id'],dico['name'],dico['member_id'])
+
+def conversion_dico_message(dico):
+    return message(dico['id'],dico['reception_date'],dico['sender_id'],dico['channel'],dico['content'])
+
+def conversion_dico_nvdico(dico) :
+    
+
+
+
+
 
 
 
