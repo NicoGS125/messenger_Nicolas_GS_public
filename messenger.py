@@ -1,12 +1,10 @@
-from datetime import datetime
-
 """
 Created on Tue Nov  5 15:19:31 2024
 
 @author: ngs
 """
+from argparse import ArgumentParser
 import json
-from datetime import datetime
 
 class User:
     def __init__(self, id: int, name : str):
@@ -50,7 +48,7 @@ class Server :
         self.message = message
 
     @classmethod
-    def load_from_json_file(cls, json_file_path: str = 'server_json.json') -> 'Server':
+    def load_from_json_file(cls, json_file_path: str) -> 'Server':
         with open(json_file_path) as json_file:
             server_as_class = cls([],[],[])
             server = json.load(json_file)
@@ -59,7 +57,7 @@ class Server :
             server_as_class.message = [Message.conversion_dico_Message(message) for message in server['message']]
         return server_as_class
 
-    def save_to_json_file(self, json_file_path: str = 'server_json.json'):
+    def save_to_json_file(self, json_file_path: str):
         server_as_dict = {
             'users': [],
             'channels': [],
@@ -122,6 +120,10 @@ class Client :
         else:
             print('Unknown option:', choice)
 
-server = Server.load_from_json_file()
+argument_parser = ArgumentParser()
+argument_parser.add_argument('-j', '--jsonfile', default='server_json.json', help='Chemin du fichier JSON dans lequel les données du serveur sont stockées')
+arguments = argument_parser.parse_args()
+
+server = Server.load_from_json_file(arguments.jsonfile)
 client = Client(server)
 client.accueil()
