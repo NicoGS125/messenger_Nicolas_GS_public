@@ -1,7 +1,15 @@
 from datetime import datetime
 import json
 
-print(2)
+import sys
+print(sys.argv)
+server = ''
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument('-s','--server')
+args = parser.parse_args()
+print('ArgumentParser a parsé le paramètre suivant :', args.server)
+commit_message = args.server
 
 
 class User:
