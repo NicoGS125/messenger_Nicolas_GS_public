@@ -5,6 +5,7 @@ Created on Tue Nov  5 15:19:31 2024
 """
 from argparse import ArgumentParser
 import json
+import requests
 
 class User:
     def __init__(self, id: int, name : str):
@@ -56,7 +57,7 @@ class Server :
             server_as_class.channels = [Channels.conversion_dico_Channels(channels) for channels in server['channels']]
             server_as_class.message = [Message.conversion_dico_Message(message) for message in server['message']]
         return server_as_class
-
+    
     def save_to_json_file(self, json_file_path: str):
         server_as_dict = {
             'users': [],
@@ -72,12 +73,23 @@ class Server :
         with open(json_file_path, 'w') as json_file :
             json.dump(server_as_dict, json_file)
 
+    def id_to_channel(self,numero):
+        for elem in self.server.channels:
+            if numero == elem.id :
+                return elem
+    
     def id_to_name2(self, id):
         L = []
         for elem in self.users:
             L.append(elem.name)
         return L[0]
-
+    
+class RemoteServer :
+    def __init__(self, server_url):
+        self.server_url = server_url
+        reponse = requests.get(server_url)
+        #if reponse.status_code == 200 :
+                      
 class Client :
     def __init__(self, server : Server):
         self.server = server
@@ -94,6 +106,25 @@ class Client :
         n_id = max(user.id for user in self.server['users'])+1
         self.server.users.append(User.conversion_dico_User({'id': n_id,'name':nom}))
 
+    def see_users(self):
+        choix = input("de quel channel voulez vous voir les membres ?")
+        if choix not in self.server.channels :
+            return "il y a une erreur"
+        liste_users_channel = []
+        for elem in self.server.message :
+            if elem.channel == choix and elem.sender_id not in liste_users_channel : 
+                liste_users_channel.append(elem.sender_id)
+
+    def see_channels(self):
+        choix = input("quel channel voulez voir ?")
+        if choix not in self.server.channels :
+            return "il y a une erreur"
+        liste_message = []
+        for elem in self.server.message : 
+            if elem.channel == choix :
+                liste_message.append(elem)
+        return liste_message
+          
     def accueil(self) :
         print('=== Messenger ===')
         print('x. Leave')
@@ -122,8 +153,11 @@ class Client :
 
 argument_parser = ArgumentParser()
 argument_parser.add_argument('-j', '--jsonfile', default='server_json.json', help='Chemin du fichier JSON dans lequel les données du serveur sont stockées')
+argument_parser.add_argument('--url')
 arguments = argument_parser.parse_args()
 
 server = Server.load_from_json_file(arguments.jsonfile)
 client = Client(server)
 client.accueil()
+
+
