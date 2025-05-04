@@ -5,5 +5,5 @@ class User:
     @classmethod
     def conversion_dico_User(cls, user : 'dict') -> 'User':
         return cls(user['id'],user['name'])
-    def conversion_User_dico(self):
+    def conversion_User_dico(self) -> dict:
         return{'id':self.id, 'name': self.name}

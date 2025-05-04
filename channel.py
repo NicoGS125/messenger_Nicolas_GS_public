@@ -6,5 +6,5 @@ class Channels :
     @classmethod
     def conversion_dico_Channels(cls, channels : 'dict') -> 'Channels':
         return cls(channels['id'], channels['name'], channels['member_id'])
-    def conversion_Channels_dico(self):
+    def conversion_Channels_dico(self) -> dict:
         return{'id': self.id, 'name': self.name, 'member_id': self.member_id}

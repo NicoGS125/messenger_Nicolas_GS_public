@@ -12,6 +12,17 @@ class Server :
     def get_users(self) -> 'list[User]':
         return self.users
 
+    # Notez que cette fonction à la même signature (nombre et types
+    # des paramètres et valeurs de retour) que la fonction
+    # `RemoteServer.create_user`. Ca vous permettra de les utiliser
+    # au niveau du client sans avoir à vous soucier de savoir
+    # si vous manipuler un `Server` ou un `RemoteServer`
+    def create_user(self, user_name: str) -> None:
+        # J'ai pris et adapté ces 2 lignes de votre fonction
+        # `Client.new_user`
+        n_id = max(user.id for user in self.users)+1
+        self.users.append(User(n_id, user_name))
+
     @classmethod
     def load_from_json_file(cls, json_file_path: str) -> 'Server':
         with open(json_file_path) as json_file:
@@ -21,9 +32,9 @@ class Server :
             server_as_class.channels = [Channels.conversion_dico_Channels(channels) for channels in server['channels']]
             server_as_class.message = [Message.conversion_dico_Message(message) for message in server['message']]
         return server_as_class
-    
-    def save_to_json_file(self, json_file_path: str):
-        server_as_dict = {
+
+    def save_to_json_file(self, json_file_path: str) -> None:
+        server_as_dict: dict[str, list] = {
             'users': [],
             'channels': [],
             'message': [],
@@ -37,8 +48,8 @@ class Server :
         with open(json_file_path, 'w') as json_file :
             json.dump(server_as_dict, json_file)
 
-    def id_to_channel(self,numero):
-        for elem in self.server.channels:
+    def id_to_channel(self,numero: int) -> Channels:
+        for elem in self.channels:
             if numero == elem.id :
                 return elem
     
